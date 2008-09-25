@@ -1,0 +1,7 @@
+These files in the v8 root will (of course) go away once v8c is more mature.
+
+Build:
+  make
+
+Run:
+  LD_LIBRARY_PATH=. ./v8c "print(3)"
