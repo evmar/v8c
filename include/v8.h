@@ -425,8 +425,10 @@ class EXPORT HandleScope {
   // scopes by disallowing certain operations.
   HandleScope(const HandleScope&);
   void operator=(const HandleScope&);
+#ifndef BUILDING_V8C  // C bindings need to be able to heap-allocate.
   void* operator new(size_t size);
   void operator delete(void*, size_t);
+#endif
 
   class EXPORT Data {
    public:
