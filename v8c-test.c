@@ -4,30 +4,34 @@
 const bool true = 1;
 const bool false = 0;
 
+static void print_value(V8Handle v) {
+  V8StringUtf8Value* utf8 = v8_string_utf8_value_new(v);
+  printf("%s", v8_string_utf8_value_chars(utf8));
+  v8_string_utf8_value_free(utf8);
+}
+
 // A callback from JavaScript to print verbosely.
-static V8Handle debug_print_cb(const V8Arguments args) {
+static V8Handle debug_print_cb(const V8Arguments* args) {
   int i, length = v8_arguments_length(args);
   printf("debug_print called with %d args\n", length);
   for (i = 0; i < length; ++i) {
-    V8StringUtf8Value* utf8 =
-        v8_string_utf8_value_new(v8_arguments_get(args, i));
-    printf("%d: %s\n", i, v8_string_utf8_value_chars(utf8));
-    v8_string_utf8_value_free(utf8);
+    printf("%d: ", i);
+    print_value(v8_arguments_get(args, i));
+    printf("\n");
   }
+  return v8_undefined();
 }
 
 // A callback from JavaScript to print concisely.
-static V8Handle print_cb(const V8Arguments args) {
+static V8Handle print_cb(const V8Arguments* args) {
   int i, length = v8_arguments_length(args);
   for (i = 0; i < length; ++i) {
-    V8StringUtf8Value* utf8 =
-        v8_string_utf8_value_new(v8_arguments_get(args, i));
     if (i > 0)
       printf(" ");
-    printf("%s", v8_string_utf8_value_chars(utf8));
-    v8_string_utf8_value_free(utf8);
+    print_value(v8_arguments_get(args, i));
   }
   printf("\n");
+  return v8_undefined();
 }
 
 void report_exception(V8TryCatch* try_catch) {
@@ -68,8 +72,13 @@ int main(int argc, char** argv) {
     report_exception(try_catch);
   } else {
     V8Handle result = v8_script_run(script);
-    if (v8_handle_is_empty(result))
+    if (v8_handle_is_empty(result)) {
       report_exception(try_catch);
+    } else {
+      printf("result is: ");
+      print_value(result);
+      printf("\n");
+    }
   }
   v8_try_catch_free(try_catch);
 
