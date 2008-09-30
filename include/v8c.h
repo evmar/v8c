@@ -87,7 +87,6 @@ V8Handle v8_context_new(V8ExtensionConfiguration extensions,
 void v8_context_enter(V8Handle context);
 void v8_context_exit(V8Handle context);
 
-
 #ifdef __cplusplus
 }
 #endif
