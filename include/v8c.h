@@ -64,9 +64,9 @@ V8Handle v8_object_template_new();
 
 /* Special static values */
 V8Handle v8_undefined();
-/*V8Handle v8_null();
+V8Handle v8_null();
 V8Handle v8_true();
-V8Handle v8_true();*/
+V8Handle v8_false();
 
 /* V8 (class containing static functions) */
 void v8_set_flags_from_command_line(int* argc, char** argv,

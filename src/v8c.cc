@@ -89,6 +89,18 @@ V8Handle v8_undefined() {
   return unwrap_handle(v8::Undefined());
 }
 
+V8Handle v8_null() {
+  return unwrap_handle(v8::Null());
+}
+
+V8Handle v8_true() {
+  return unwrap_handle(v8::True());
+}
+
+V8Handle v8_false() {
+  return unwrap_handle(v8::False());
+}
+
 V8Handle v8_script_compile(V8Handle code) {
   return unwrap_handle(v8::Script::Compile(wrap_handle<v8::String>(code)));
 }
